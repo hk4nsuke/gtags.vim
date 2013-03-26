@@ -352,10 +352,11 @@ function! s:ExecLoad(option, long_option, pattern)
     endif
     let l:option = l:option . '--result=' . g:Gtags_Result . ' -q'
     let l:option = l:option . s:TrimOption(a:option)
+	" Memo: use -a option. output absolute path.
     if l:isfile == 1
-        let l:cmd = s:global_command . ' ' . l:option . ' ' . g:Gtags_Shell_Quote_Char . a:pattern . g:Gtags_Shell_Quote_Char
+        let l:cmd = s:global_command . ' ' . '-a' . ' ' . l:option . ' ' . g:Gtags_Shell_Quote_Char . a:pattern . g:Gtags_Shell_Quote_Char
     else
-        let l:cmd = s:global_command . ' ' . l:option . 'e ' . g:Gtags_Shell_Quote_Char . a:pattern . g:Gtags_Shell_Quote_Char 
+        let l:cmd = s:global_command . ' ' . '-a' . ' ' . l:option . 'e ' . g:Gtags_Shell_Quote_Char . a:pattern . g:Gtags_Shell_Quote_Char 
     endif
 
     let l:result = system(l:cmd)
@@ -470,7 +471,8 @@ function! GtagsCandidateCore(lead, line, pos)
         endif
         return glob(l:pattern)
     else 
-        return system(s:global_command . ' ' . '-c' . s:option . ' ' . a:lead)
+		" Memo: use -a option. output absolute path.
+        return system(s:global_command . ' ' . '-a' . ' ' . '-c' . s:option . ' ' . a:lead)
     endif
 endfunction
 
